@@ -17,7 +17,7 @@ app.get("/" , async(req , res) =>{
     res.status(200).json({
         success : true,
         message : "Job portal server runing"
-    })
+    });
 });
 
 const main = async() =>{
@@ -29,8 +29,6 @@ main().then(() => console.log("Mongoose connect success")).catch((error) => {
     console.log("Mongoose connection error");
     console.log("Mongoose error message" + error.message);
 })
-
-
 
 
 app.listen(port , () =>{
