@@ -13,7 +13,6 @@ app.use(cors({
     credentials : true
 }));
 
-
 app.get("/" , async(req , res) =>{
     res.status(200).json({
         success : true,
@@ -21,9 +20,21 @@ app.get("/" , async(req , res) =>{
     })
 });
 
+const main = async() =>{
+    await mongoose.connect(process.env.mongodb_url);
+};
+
+
+main().then(() => console.log("Mongoose connect success")).catch((error) => {
+    console.log("Mongoose connection error");
+    console.log("Mongoose error message" + error.message);
+})
+
+
+
 
 app.listen(port , () =>{
     console.log(`http://localhost:${port}`);
     console.log("Server runing success");
-})
+});
 
