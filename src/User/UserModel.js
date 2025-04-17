@@ -4,11 +4,13 @@ const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: [true, "Username is required"]
+        required: [true, "Username is required"],
+        unique : [true , "Username Already used! Please try another username."]
     },
     email: {
         type: String,
-        required: [true, "email is required"]
+        required: [true, "email is required"],
+        unique : [true , "Email Already used! Please try another email."]
     },
     password: {
         type: String,
@@ -29,6 +31,11 @@ userSchema.pre("save" , async function(next){
     };
     this.password = await bcrypt.hash(this.password , 10);
 });
+
+
+userSchema.methods.compairePassword = async function(plainTextPassword){
+    return await bcrypt.compare(plainTextPassword , this.password)
+};
 
 
 const userModel = mongoose.model("user", userSchema);
