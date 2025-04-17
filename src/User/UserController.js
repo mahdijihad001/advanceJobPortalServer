@@ -1,6 +1,7 @@
 const genarateToken = require("../Middleware/JWT/GenerateJwt");
 const { userModel } = require("./UserModel");
 
+
 const userRegisterController = async(req , res) =>{
     try {
         const findEmail = await userModel.findOne({email : req.body.email});
@@ -49,9 +50,12 @@ const userLoginController = async(req , res ) =>{
             return res.statas(400).send({status : false , message : "Invalid password!"});
         };
 
-
         const token = await genarateToken(username);
 
+        // res.cookie("token" , token , {httpOnly : true , secure : true , sameSite : "None"}); for production
+        res.cookie("token" , token , {httpOnly : true}); // development mood
+
+        res.status(200).send({status : true , message : "Login success" , data : findUser});
 
     } catch (error) {
         return res.status(400).send({status : false , message : "User not valid!"})
@@ -59,4 +63,4 @@ const userLoginController = async(req , res ) =>{
 }
 
 
-module.exports = {userRegisterController};
+module.exports = {userRegisterController , userLoginController};

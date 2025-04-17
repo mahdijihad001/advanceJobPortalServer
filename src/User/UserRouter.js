@@ -1,11 +1,10 @@
 const express = require("express");
-const { userRegisterController } = require("./UserController");
+const { userRegisterController, userLoginController } = require("./UserController");
 
 const userRouter = express.Router();
 
 userRouter.post("/register" , userRegisterController);
-
-
+userRouter.post("/login" , userLoginController);
 
 
 
