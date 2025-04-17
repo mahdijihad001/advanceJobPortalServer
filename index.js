@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
 const cors = require("cors");
+const { userRouter } = require("./src/User/UserRouter");
 const port = process.env.serverPort;
 
 
@@ -12,6 +13,12 @@ app.use(cors({
     origin : "http://localhost:5173/",
     credentials : true
 }));
+
+
+// Router
+app.use("/user" , userRouter);
+
+
 
 app.get("/" , async(req , res) =>{
     res.status(200).json({
