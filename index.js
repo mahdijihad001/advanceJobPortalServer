@@ -5,12 +5,14 @@ require("dotenv").config();
 const cors = require("cors");
 const { userRouter } = require("./src/User/UserRouter");
 const port = process.env.serverPort;
-
+const bodyParser = require("body-parser");
 
 // Middleware
 app.use(express.json());
+app.use(bodyParser.json());
+
 app.use(cors({
-    origin : "http://localhost:5173/",
+    origin : "http://localhost:5173",
     credentials : true
 }));
 
