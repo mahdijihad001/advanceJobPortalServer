@@ -39,6 +39,7 @@ const userLoginController = async(req , res ) =>{
         const {username , password} = req.body;
 
         const findUser = await userModel.findOne({username : username});
+        const user = await userModel.findOne({username : username}).select("-password -__v");
 
         if(!findUser){
             return res.status(404).send({status : false , message : "User not found! Please try valid information."})
@@ -55,12 +56,23 @@ const userLoginController = async(req , res ) =>{
         // res.cookie("token" , token , {httpOnly : true , secure : true , sameSite : "None"}); for production
         res.cookie("token" , token , {httpOnly : true}); // development mood
 
-        res.status(200).send({status : true , message : "Login success" , data : {user : findUser , token}});
+        res.status(200).send({status : true , message : "Login success" , data : {user : user}});
 
     } catch (error) {
         return res.status(400).send({status : false , message : "User not valid!"});
     }
+};
+
+
+const logOutController = async(req , res) =>{
+    try {
+        res.clearCookie("token");
+        res.status(200).send({status : true , message : "User logout success!"});
+
+    } catch (error) {
+        return res.status(400).send({status : false , message : "Log out faild"});
+    }
 }
 
 
-module.exports = {userRegisterController , userLoginController};
+module.exports = {userRegisterController , userLoginController , logOutController};
