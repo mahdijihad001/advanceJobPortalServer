@@ -41,13 +41,13 @@ const userLoginController = async(req , res ) =>{
         const findUser = await userModel.findOne({username : username});
 
         if(!findUser){
-            return res.status(404).send({statas : false , message : "User not found! Please try valid information."})
+            return res.status(404).send({status : false , message : "User not found! Please try valid information."})
         };
 
-        const compairePassword = await verifyPassword(password);
+        const compairePassword = await findUser.verifyPassword(password);
 
         if(!compairePassword){
-            return res.statas(400).send({status : false , message : "Invalid password!"});
+            return res.status(400).send({status : false , message : "Invalid password!"});
         };
 
         const token = await genarateToken(username);
@@ -55,10 +55,10 @@ const userLoginController = async(req , res ) =>{
         // res.cookie("token" , token , {httpOnly : true , secure : true , sameSite : "None"}); for production
         res.cookie("token" , token , {httpOnly : true}); // development mood
 
-        res.status(200).send({status : true , message : "Login success" , data : findUser});
+        res.status(200).send({status : true , message : "Login success" , data : {user : findUser , token}});
 
     } catch (error) {
-        return res.status(400).send({status : false , message : "User not valid!"})
+        return res.status(400).send({status : false , message : "User not valid!"});
     }
 }
 
