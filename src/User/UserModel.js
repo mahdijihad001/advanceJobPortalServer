@@ -33,7 +33,7 @@ userSchema.pre("save" , async function(next){
 });
 
 
-userSchema.methods.compairePassword = async function(plainTextPassword){
+userSchema.methods.verifyPassword = async function(plainTextPassword){
     return await bcrypt.compare(plainTextPassword , this.password)
 };
 
