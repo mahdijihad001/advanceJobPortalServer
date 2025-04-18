@@ -1,5 +1,6 @@
 const genarateToken = require("../Middleware/JWT/GenerateJwt");
 const { userModel } = require("./UserModel");
+const mongoose = require("mongoose");
 
 
 const userRegisterController = async(req , res) =>{
@@ -72,7 +73,40 @@ const logOutController = async(req , res) =>{
     } catch (error) {
         return res.status(400).send({status : false , message : "Log out faild"});
     }
+};
+
+const findAllUserController = async(req , res) =>{
+    try {
+        
+        const result = await userModel.find({}).select("-password -__v");
+
+        if(!result){
+            return res.status(400).send({status : false , message : "No user Found!"});
+        };
+
+
+        res.status(200).send({status : true , message : "Get all User" , allUser : result});
+
+    } catch (error) {
+        return res.status(404).send({status : false , message : "User not found!"});
+    }
+};
+
+const deleteSingleUserController = async(req , res) =>{
+    try {
+        
+        const {id} = req.body;
+
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(401).send({status : false , message : "User not valid"});
+        }
+
+        const result = await userModel.findByIdAndDelete(id);
+
+    } catch (error) {
+        return res.status(400).send({status : false , message : "User delete faild"});
+    }
 }
 
 
-module.exports = {userRegisterController , userLoginController , logOutController};
+module.exports = {userRegisterController , userLoginController , logOutController , findAllUserController , deleteSingleUserController};
