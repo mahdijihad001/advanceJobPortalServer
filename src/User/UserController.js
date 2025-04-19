@@ -132,7 +132,25 @@ const getSingleUser = async(req , res) =>{
     } catch (error) {
         return res.status(404).send({status : false , message : "User not found!"});
     }
+};
+
+const updateSingleUser = async(req , res) =>{
+    try {
+        
+        const {id} = req.params;
+
+        const result = await userModel.findByIdAndUpdate(id , {...req.body} , {new : true , runValidators : true});
+
+        if(!result){
+            return res.status(400).send({status : false , message : "User update faild!"});
+        }
+
+        res.status(200).send({status : true , message : "User updated success!"});
+
+    } catch (error) {
+        return res.status(401).send({status : false , message : "User updated faild"});
+    }
 }
 
 
-module.exports = {userRegisterController , userLoginController , logOutController , findAllUserController , deleteSingleUserController , getSingleUser};
+module.exports = {userRegisterController , userLoginController , logOutController , findAllUserController , deleteSingleUserController , getSingleUser , updateSingleUser};
