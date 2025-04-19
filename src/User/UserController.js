@@ -95,18 +95,44 @@ const findAllUserController = async(req , res) =>{
 const deleteSingleUserController = async(req , res) =>{
     try {
         
-        const {id} = req.body;
+        const {id} = req.params;
 
         if(!mongoose.Types.ObjectId.isValid(id)){
             return res.status(401).send({status : false , message : "User not valid"});
         }
 
-        const result = await userModel.findByIdAndDelete(id);
+        await userModel.findByIdAndDelete(id);
+
+        res.status(200).send({suatus : true , message : "User deleted success!"})
 
     } catch (error) {
         return res.status(400).send({status : false , message : "User delete faild"});
     }
+};
+
+const getSingleUser = async(req , res) =>{
+    try {
+        
+        const {id} = req.params;
+
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(400).send({status : false , message : "User not valid! Please try again."});
+        }
+
+        const result = await userModel.findOne({_id : id}).select("-password -__v");
+
+        if(!result){
+            return res.status(401).send({status : false , message : "User not found Please try again!"});
+        }
+
+
+        res.status(200).send({status : true , message : "User found!" , user : result});
+
+
+    } catch (error) {
+        return res.status(404).send({status : false , message : "User not found!"});
+    }
 }
 
 
-module.exports = {userRegisterController , userLoginController , logOutController , findAllUserController , deleteSingleUserController};
+module.exports = {userRegisterController , userLoginController , logOutController , findAllUserController , deleteSingleUserController , getSingleUser};
