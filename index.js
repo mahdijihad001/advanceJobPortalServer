@@ -7,6 +7,7 @@ const { userRouter } = require("./src/User/UserRouter");
 const port = process.env.serverPort;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const profileRouter = require("./src/UpdateProfile/Profile/ProfileRouter");
 
 // Middleware
 app.use(express.json());
@@ -23,7 +24,7 @@ app.use(cors({
 
 // Router
 app.use("/user" , userRouter);
-
+app.use('/profile' , profileRouter);
 
 
 app.get("/" , async(req , res) =>{
