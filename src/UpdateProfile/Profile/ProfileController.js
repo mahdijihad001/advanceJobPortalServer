@@ -7,7 +7,7 @@ const updateProfileControler = async( req , res ) => {
 
         if(!mongoose.Types.ObjectId.isValid(id)){
             return res.status(400).send({status : false , message  : "User not valid! Please try again."});
-        }
+        };
 
         const result = await profileModel.findByIdAndUpdate(id , {...req.body} , {new : true , upsert : true , runValidators : true});
 
@@ -23,4 +23,4 @@ const updateProfileControler = async( req , res ) => {
 };
 
 
-module.exports = {updateProfileControler}
+module.exports = {updateProfileControler};
