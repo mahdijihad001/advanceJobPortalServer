@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const contactModel = require("./ContactModel");
 
 
-const updateSocialNetwork = async (req, res) => {
+const contactUpdateController = async (req, res) => {
     try {
 
         const { id } = req.params;
@@ -24,4 +24,23 @@ const updateSocialNetwork = async (req, res) => {
     }
 };
 
-module.exports = {updateSocialNetwork};
+
+const getSingleContact = async(req , res) =>{
+    try {
+        
+        const {id} = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send({ status: false, message: "User not valid! Please try again." });
+        };
+
+
+        const result = await contactModel.findOne({authore : id});
+
+        res.status(401).send({status : true , message : "Soical Contact found"})
+
+    } catch (error) {
+        return res.status(404).send({status : false , message : "Soical Contact not found!"});
+    }
+}
+
+module.exports = {contactUpdateController , getSingleContact};
