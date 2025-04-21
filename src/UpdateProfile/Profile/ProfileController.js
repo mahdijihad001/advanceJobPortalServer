@@ -22,5 +22,26 @@ const updateProfileControler = async (req, res) => {
     }
 };
 
+const getSingleUserController = async(req , res) =>{
+    try {
+        const { id } = req.params;
 
-module.exports = { updateProfileControler };
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send({ status: false, message: "User not valid! Please try again." });
+        };
+
+
+        const result = await profileModel.findOne({_id : id});
+
+        if (!result) {
+            return res.status(400).send({ status: false, message: "User profile not Found!" });
+        };
+
+        res.status(200).send({ status: true, message: "Profild found success!", profile : result });
+
+    } catch (error) {
+        return res.status(404).send({status : false , message : "User profile not found!"})
+    }
+};
+
+module.exports = { updateProfileControler , getSingleUserController};

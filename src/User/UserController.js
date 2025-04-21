@@ -149,7 +149,7 @@ const updateSingleUser = async (req, res) => {
             return res.status(400).send({ status: false, message: "User update faild!" });
         }
 
-        res.status(200).send({ status: true, message: "User updated success!" });
+        res.status(200).send({ status: true, message: "User updated success!" , user : result});
 
     } catch (error) {
         return res.status(401).send({ status: false, message: "User updated faild" });
