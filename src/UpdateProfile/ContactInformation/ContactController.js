@@ -40,7 +40,7 @@ const getSingleContact = async(req , res) =>{
             return res.status(400).send({ status: false, message: "Profile Contact founded faild!" });
         };
 
-        res.status(401).send({status : true , message : "Contact found" , data : result})
+        res.status(200).send({status : true , message : "Contact found" , data : result})
 
     } catch (error) {
         return res.status(404).send({status : false , message : "Contact not found!" });
