@@ -24,4 +24,25 @@ const updateSocialNetwork = async (req, res) => {
     }
 };
 
-module.exports = {updateSocialNetwork};
+
+const getSingleNetwork = async(req , res) =>{
+    try {
+        const {id} = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send({ status: false, message: "User not valid! Please try again." });
+        };
+
+        const result = await networkModel.findOne({authore : id});
+        if (!result) {
+            return res.status(400).send({ status: false, message: "Social Contact not found!" });
+        };
+
+        res.status(200).send({status : true , message : "Social newwork founded!" , data : result})
+
+    } catch (error) {
+        return res.status(401).send({status : false , message : "Social network not found"})
+    }
+}
+
+module.exports = {updateSocialNetwork , getSingleNetwork};
