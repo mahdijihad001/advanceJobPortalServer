@@ -10,6 +10,7 @@ const cookieParser = require("cookie-parser");
 const profileRouter = require("./src/UpdateProfile/Profile/ProfileRouter");
 const contactRouter = require("./src/UpdateProfile/ContactInformation/ContactRouter");
 const networkRouter = require("./src/UpdateProfile/SocialNetwork/NetworkRouter");
+const { resumiRouter } = require("./src/UpdateProfile/Resumi/resumiRouter");
 
 // Middleware
 app.use(express.json());
@@ -29,6 +30,9 @@ app.use("/user" , userRouter);
 app.use('/profile' , profileRouter);
 app.use("/contact" , contactRouter);
 app.use("/network" , networkRouter);
+app.use("/resumi" , resumiRouter);
+
+
 
 app.get("/" , async(req , res) =>{
     res.status(200).json({
