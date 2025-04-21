@@ -35,11 +35,15 @@ const getSingleContact = async(req , res) =>{
 
 
         const result = await contactModel.findOne({authore : id});
+        
+        if (!result) {
+            return res.status(400).send({ status: false, message: "Profile Contact founded faild!" });
+        };
 
-        res.status(401).send({status : true , message : "Soical Contact found"})
+        res.status(401).send({status : true , message : "Contact found" , data : result})
 
     } catch (error) {
-        return res.status(404).send({status : false , message : "Soical Contact not found!"});
+        return res.status(404).send({status : false , message : "Contact not found!" });
     }
 }
 

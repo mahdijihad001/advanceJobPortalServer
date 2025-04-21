@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-const mongoose = require("mongoose");
-
 const contactSchema = new mongoose.Schema({
     authore : {
         type : mongoose.Schema.Types.ObjectId,
