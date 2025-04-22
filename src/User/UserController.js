@@ -54,7 +54,7 @@ const userLoginController = async (req, res) => {
 
         const token = await genarateToken(username);
 
-        // res.cookie("token" , token , {httpOnly : true , secure : true , sameSite : "None"}); for production
+        // res.cookie("token" , token , {httpOnly : true , secure : true , sameSite : "None" ,  maxAge: 1000 * 60 * 60 * 24 * 365 * 10}); 
         res.cookie("token", token, { httpOnly: true }); // development mood
 
         res.status(200).send({ status: true, message: "Login success", data: { user: user } });
