@@ -5,6 +5,11 @@ const jobSchema = new mongoose.Schema({
         type : String , 
         required : [true , "Job title are required"]
     },
+    authore : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "user",
+        required : [true , "Authore are required"]
+    },
     jobType : {
         type : String , 
         required : [true , "Job tipe are required"]
