@@ -5,6 +5,10 @@ const companySchema = new mongoose.Schema({
         type: String,
         required: [true, "Company name are required!"]
     },
+    authore: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: [true, "Authore are required!"]
+    },
     image: {
         type: String
     },
