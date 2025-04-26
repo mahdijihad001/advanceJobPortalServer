@@ -3,6 +3,6 @@ const { updateProfileControler, getSingleUserController } = require("./ProfileCo
 const profileRouter = express.Router();
 
 profileRouter.patch("/update/:id" , updateProfileControler);
-profileRouter.get("/single/:id" , getSingleUserController)
+profileRouter.get("/single/:id" , getSingleUserController);
 
 module.exports = profileRouter

@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 const profileModel = require("./ProfileModel");
+const { userModel } = require("../../User/UserModel");
 
 const updateProfileControler = async (req, res) => {
     try {
         const { id } = req.params;
-
+        console.log(req.body);
+        console.log(id);
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).send({ status: false, message: "User not valid! Please try again." });
         };
@@ -22,26 +24,73 @@ const updateProfileControler = async (req, res) => {
     }
 };
 
-const getSingleUserController = async(req , res) =>{
+const getSingleUserController = async (req, res) => {
     try {
+
         const { id } = req.params;
-
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).send({ status: false, message: "User not valid! Please try again." });
+            return res.status(400).send({ status: false, message: "User not valid!" });
         };
 
 
-        const result = await profileModel.findOne({_id : id});
+        const resumi = await userModel.aggregate([
+            {
+                $match: { _id: new mongoose.Types.ObjectId(id) }
+            },
+            {
+                $lookup: {
+                    from: "profiles",
+                    localField: "_id",
+                    foreignField: "authore",
+                    as: "profile"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$profile",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "networks",
+                    localField: "_id",
+                    foreignField: "authore",
+                    as: "network"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$network",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: "contacts",
+                    localField: "_id",
+                    foreignField: "authore",
+                    as: "contact"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$contact",
+                    preserveNullAndEmptyArrays: true
+                }
+            }
+        ]);
 
-        if (!result) {
-            return res.status(400).send({ status: false, message: "User profile not Found!" });
+        if (!resumi || resumi.length === 0) {
+            return res.status(400).send({ status: false, message: "User Resumi not found!" })
         };
 
-        res.status(200).send({ status: true, message: "Profild found success!", profile : result });
+
+        res.status(200).send({ status: true, message: "User resumi found", data: resumi });
 
     } catch (error) {
-        return res.status(404).send({status : false , message : "User profile not found!"})
+        return res.status(404).send({ status: false, message: "User resumi not found!" });
     }
 };
 
-module.exports = { updateProfileControler , getSingleUserController};
+module.exports = { updateProfileControler, getSingleUserController };

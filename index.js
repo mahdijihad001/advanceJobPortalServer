@@ -11,9 +11,11 @@ const profileRouter = require("./src/UpdateProfile/Profile/ProfileRouter");
 const contactRouter = require("./src/UpdateProfile/ContactInformation/ContactRouter");
 const networkRouter = require("./src/UpdateProfile/SocialNetwork/NetworkRouter");
 const { resumiRouter } = require("./src/UpdateProfile/Resumi/resumiRouter");
+const { jobRouter } = require("./src/Job/JobRouter");
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({extended : true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
@@ -31,7 +33,7 @@ app.use('/profile' , profileRouter);
 app.use("/contact" , contactRouter);
 app.use("/network" , networkRouter);
 app.use("/resumi" , resumiRouter);
-
+app.use("/job" , jobRouter);
 
 
 app.get("/" , async(req , res) =>{

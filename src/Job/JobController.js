@@ -99,3 +99,6 @@ const deleteJobController = async(req , res) =>{
         return res.status(500).send({status : false , message : "Job not deleted!" , error : error.message});
     }
 }
+
+
+module.exports = {createJobController , findAllJobs , updateJobController , deleteJobController};
