@@ -28,7 +28,39 @@ const updateCompanyController = async (req, res) => {
 const getfullSingleCompany = async(req , res) =>{
     try {
         const {id} = req.params;
-        console.log(id);
+        const company = await companyModel.aggregate([
+            {
+                $match : {_id : new mongoose.Types.ObjectId(id)}
+            },
+            {
+                $lookup : {
+                    from : "companyNetworks",
+                    localField : "_id",
+                    foreignField : "authore",
+                    as : "SocialNetwork"
+                }
+            },
+            {
+                $unwind : {
+                    path : "$SocialNetwork",
+                    preserveNullAndEmptyArrays : true
+                }
+            },
+            {
+                $lookup : {
+                    from : "companyContacts",
+                    localField : "_id",
+                    foreignField : "authore",
+                    as : "Address"
+                }
+            },
+            {
+                $unwind : {
+                    path : "$Address",
+                    preserveNullAndEmptyArrays : true
+                }
+            }
+        ])
     } catch (error) {
         return res.status(400).send({status : false , message : "Company Not Found!"})
     }
