@@ -12,6 +12,7 @@ const contactRouter = require("./src/UpdateProfile/ContactInformation/ContactRou
 const networkRouter = require("./src/UpdateProfile/SocialNetwork/NetworkRouter");
 const { resumiRouter } = require("./src/UpdateProfile/Resumi/resumiRouter");
 const { jobRouter } = require("./src/Job/JobRouter");
+const companyRouter = require("./src/Company/companyRouter");
 
 // Middleware
 app.use(express.json());
@@ -34,7 +35,7 @@ app.use("/contact" , contactRouter);
 app.use("/network" , networkRouter);
 app.use("/resumi" , resumiRouter);
 app.use("/job" , jobRouter);
-
+app.use("/company" , companyRouter);
 
 app.get("/" , async(req , res) =>{
     res.status(200).json({
