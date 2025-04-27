@@ -60,7 +60,16 @@ const getfullSingleCompany = async(req , res) =>{
                     preserveNullAndEmptyArrays : true
                 }
             }
-        ])
+        ]);
+
+
+        if(!company){
+            return res.status(404).send({status : false , message : "Company not found!"});
+        };
+
+
+        res.status(200).send({status : true , message : "Company found success!" , company})
+
     } catch (error) {
         return res.status(400).send({status : false , message : "Company Not Found!"})
     }
