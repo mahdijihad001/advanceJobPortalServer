@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const companyModel = require("./companyModel");
 const companyNetworkModel = require("./companyNetworkModel");
+const companyContactModel = require("./companyContactModel");
 
 // Company Controller
 
@@ -23,6 +24,16 @@ const updateCompanyController = async (req, res) => {
     }
 };
 
+
+const getfullSingleCompany = async(req , res) =>{
+    try {
+        const {id} = req.params;
+        console.log(id);
+    } catch (error) {
+        return res.status(400).send({status : false , message : "Company Not Found!"})
+    }
+}
+
 // Company Social Network
 
 const companySocialNetworkUpdate = async (req, res) => {
@@ -42,6 +53,32 @@ const companySocialNetworkUpdate = async (req, res) => {
         res.status(200).send({ status: true, message: "Company Update Success" });
 
     } catch (error) {
-        return res.status(400).send({ status: false, message: "Social Network faild!" });
+        return res.status(400).send({ status: false, message: "Social Network Update faild!" });
     }
 };
+
+
+// Company Address
+
+const updateCompanyAddress = async (req, res) => {
+    try {
+
+        const { id } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send({ status: false, message: "User not valid!" });
+        };
+
+        const result = await companyContactModel.findByIdAndUpdate(id , {...req.body} , {new : true , runValidators : true});
+
+        if (!result) {
+            return res.status(501).send({ status: false, message: " Address not update!" });
+        }
+        res.status(200).send({ status: true, message: "Company Address Update Success" });
+
+    } catch (error) {
+        return res.status(400).send({ status: false, message: "Company Address Update faild!" });
+    }
+};
+
+
+module.exports = {updateCompanyController , companySocialNetworkUpdate , updateCompanyAddress , getfullSingleCompany}
