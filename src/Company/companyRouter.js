@@ -6,7 +6,7 @@ companyRouter.patch("/update/:id" , updateCompanyController);
 companyRouter.get("/single/:id" , getfullSingleCompany);
 
 // Social Network
-companyRouter.param("/social/:id" , companySocialNetworkUpdate);
+companyRouter.patch("/social/:id" , companySocialNetworkUpdate);
 // Company address 
 companyRouter.patch("/addrss/:id" , updateCompanyAddress);
 
