@@ -13,14 +13,14 @@ const updateCompanyController = async (req, res) => {
             return res.status(400).send({ status: false, message: "User not valid!" });
         };
 
-        const result = await companyModel.findByIdAndUpdate(id, { ...req.body }, { new: true, runValidators: true });
+        const result = await companyModel.findOneAndUpdate({authore : id}, { ...req.body }, { new: true, runValidators: true });
         if (!result) {
-            return res.status(501).send({ status: false, message: "Conpany not update!" });
+            return res.status(400).send({ status: false, message: "Conpany not update!" });
         }
         res.status(200).send({ status: true, message: "Company Update Success" });
 
     } catch (error) {
-        return res.status(500).send({ status: false, message: "Conpany Update faild!" });
+        return res.status(400).send({ status: false, message: "Conpany Update faild!!!" });
     }
 };
 

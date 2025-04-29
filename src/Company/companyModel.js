@@ -7,7 +7,8 @@ const companySchema = new mongoose.Schema({
     },
     authore: {
         type: mongoose.Schema.Types.ObjectId,
-        required: [true, "Authore are required!"]
+        required: [true, "Authore are required!"],
+        ref : "user"
     },
     image: {
         type: String
