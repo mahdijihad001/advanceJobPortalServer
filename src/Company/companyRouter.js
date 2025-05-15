@@ -8,7 +8,7 @@ companyRouter.get("/single/:id" , getfullSingleCompany);
 // Social Network
 companyRouter.patch("/social/:id" , companySocialNetworkUpdate);
 // Company address 
-companyRouter.patch("/addrss/:id" , updateCompanyAddress);
+companyRouter.patch("/address/:id" , updateCompanyAddress);
 
 
 
