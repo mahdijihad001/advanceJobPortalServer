@@ -13,7 +13,7 @@ const updateCompanyController = async (req, res) => {
             return res.status(400).send({ status: false, message: "User not valid!" });
         };
 
-        const result = await companyModel.findOneAndUpdate({authore : id}, { ...req.body }, { new: true, runValidators: true });
+        const result = await companyModel.findOneAndUpdate({ authore: id }, { ...req.body }, { new: true, upsert: true, runValidators: true });
         if (!result) {
             return res.status(400).send({ status: false, message: "Conpany not update!" });
         }
@@ -25,53 +25,27 @@ const updateCompanyController = async (req, res) => {
 };
 
 
-const getfullSingleCompany = async(req , res) =>{
+const getfullSingleCompany = async (req, res) => {
     try {
-        const {id} = req.params;
-        const company = await companyModel.aggregate([
-            {
-                $match : {_id : new mongoose.Types.ObjectId(id)}
-            },
-            {
-                $lookup : {
-                    from : "companyNetworks",
-                    localField : "_id",
-                    foreignField : "authore",
-                    as : "SocialNetwork"
-                }
-            },
-            {
-                $unwind : {
-                    path : "$SocialNetwork",
-                    preserveNullAndEmptyArrays : true
-                }
-            },
-            {
-                $lookup : {
-                    from : "companyContacts",
-                    localField : "_id",
-                    foreignField : "authore",
-                    as : "Address"
-                }
-            },
-            {
-                $unwind : {
-                    path : "$Address",
-                    preserveNullAndEmptyArrays : true
-                }
-            }
-        ]);
+        const { id } = req.params;
 
-
-        if(!company){
-            return res.status(404).send({status : false , message : "Company not found!"});
+        // Company
+        const company = await companyModel.findOne({ authore: id });
+        
+        if (!company) {
+            return res.status(404).send({ status: false, message: "Company not found!" });
         };
+        // contact info
+        const contact = await companyContactModel.findOne({ authore: id });
+
+        // network
+        const network = await companyNetworkModel.findOne({ authore: id });
 
 
-        res.status(200).send({status : true , message : "Company found success!" , company})
+        res.status(200).send({ status: true, message: "Company found success!", data :{company , network , contact}})
 
     } catch (error) {
-        return res.status(400).send({status : false , message : "Company Not Found!"})
+        return res.status(400).send({ status: false, message: "Company Not Found!" })
     }
 }
 
@@ -109,7 +83,7 @@ const updateCompanyAddress = async (req, res) => {
             return res.status(400).send({ status: false, message: "User not valid!" });
         };
 
-        const result = await companyContactModel.findByIdAndUpdate(id , {...req.body} , {new : true , runValidators : true});
+        const result = await companyContactModel.findByIdAndUpdate(id, { ...req.body }, { new: true, upsert : true, runValidators: true });
 
         if (!result) {
             return res.status(501).send({ status: false, message: " Address not update!" });
@@ -122,4 +96,4 @@ const updateCompanyAddress = async (req, res) => {
 };
 
 
-module.exports = {updateCompanyController , companySocialNetworkUpdate , updateCompanyAddress , getfullSingleCompany}
+module.exports = { updateCompanyController, companySocialNetworkUpdate, updateCompanyAddress, getfullSingleCompany }
